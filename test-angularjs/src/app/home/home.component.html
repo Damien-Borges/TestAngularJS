@@ -100,11 +100,11 @@
     <h2>Ajouter un Nouvel Utilisateur</h2>
     <form (ngSubmit)="addUser()">
       <label>Nom :</label>
-      <input type="text" [(ngModel)]="newUser.firstName" required>
+      <input type="text" [(ngModel)]="newUser.firstName" name="firstName" required>
       <label>Nom de famille :</label>
-      <input type="text" [(ngModel)]="newUser.lastName" required>
+      <input type="text" [(ngModel)]="newUser.lastName" name="lastName" required>
       <label>Email :</label>
-      <input type="email" [(ngModel)]="newUser.email" required>
+      <input type="email" [(ngModel)]="newUser.email" name="email" required>
       <button type="submit">Ajouter</button>
     </form>
   </div>

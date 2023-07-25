@@ -16,9 +16,16 @@ interface User {
 })
 export class HomeComponent {
   users: User[] = [];
-  newUser: User = { id: 0, createdAt: '', firstName: '', lastName: '', email: '' };
+  newUser: User;
 
   constructor(private http: HttpClient) {
+    this.newUser = {
+      id: 0,
+      createdAt: '',
+      firstName: '',
+      lastName: '',
+      email: ''
+    };
     this.getUsers();
   }
 
@@ -37,21 +44,28 @@ export class HomeComponent {
   addUser() {
     this.newUser.createdAt = new Date().toISOString();
 
-    this.http.post<User>('https://64bcf8112320b36433c74a46.mockapi.io/users', this.newUser)
+    console.log(this.newUser);
+
+    this.http.post<User>('https://64bcf8112320b36433c74a46.mockapi.io/users', this.newUser, {
+      headers: { 'Content-Type': 'application/json' }
+    })
       .subscribe(
         (data: User) => {
           this.users.push(data);
 
-          this.newUser = { id: 0, createdAt: '', firstName: '', lastName: '', email: '' };
-
-          this.getUsers();
+          this.newUser = {
+            id: 0,
+            createdAt: '',
+            firstName: '',
+            lastName: '',
+            email: ''
+          };
         },
         (error) => {
           console.error('Erreur lors de l\'ajout de l\'utilisateur :', error);
         }
       );
   }
-
 
   deleteUser(user: User) {
     this.http.delete<void>('https://64bcf8112320b36433c74a46.mockapi.io/users/' + user.id)
