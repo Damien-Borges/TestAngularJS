@@ -17,6 +17,7 @@ interface User {
 export class HomeComponent {
   users: User[] = [];
   newUser: User;
+  editingUser: User | null = null;
 
   constructor(private http: HttpClient) {
     this.newUser = {
@@ -43,8 +44,6 @@ export class HomeComponent {
 
   addUser() {
     this.newUser.createdAt = new Date().toISOString();
-
-    console.log(this.newUser);
 
     this.http.post<User>('https://64bcf8112320b36433c74a46.mockapi.io/users', this.newUser, {
       headers: { 'Content-Type': 'application/json' }
@@ -80,5 +79,36 @@ export class HomeComponent {
           console.error('Erreur lors de la suppression de l\'utilisateur :', error);
         }
       );
+  }
+
+  editUser(user: User) {
+    this.editingUser = { ...user };
+  }
+
+  cancelEdit() {
+    this.editingUser = null;
+  }
+
+  updateUser() {
+    if (this.editingUser) {
+      this.http.put<User>('https://64bcf8112320b36433c74a46.mockapi.io/users/' + this.editingUser.id, this.editingUser, {
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .subscribe(
+          (data: User) => {
+            const index = this.users.findIndex(u => u.id === data.id);
+            if (index !== -1) {
+              this.users[index] = data;
+            }
+
+            this.editingUser = null;
+          },
+          (error) => {
+            console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
+          }
+        );
+    } else {
+      console.warn('Cannot update user: editingUser is null.');
+    }
   }
 }

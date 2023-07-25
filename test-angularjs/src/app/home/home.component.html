@@ -93,20 +93,38 @@
         </div>
         <div class="user-actions">
           <button (click)="deleteUser(user)">Supprimer</button>
+          <button (click)="editUser(user)">Modifier</button>
         </div>
       </li>
     </ul>
 
-    <h2>Ajouter un Nouvel Utilisateur</h2>
-    <form (ngSubmit)="addUser()">
-      <label>Nom :</label>
-      <input type="text" [(ngModel)]="newUser.firstName" name="firstName" required>
-      <label>Nom de famille :</label>
-      <input type="text" [(ngModel)]="newUser.lastName" name="lastName" required>
-      <label>Email :</label>
-      <input type="email" [(ngModel)]="newUser.email" name="email" required>
-      <button type="submit">Ajouter</button>
-    </form>
+    <div>
+      <h2>Ajouter un nouvel utilisateur</h2>
+      <form (ngSubmit)="addUser()">
+        <label>Nom :</label>
+        <input type="text" [(ngModel)]="newUser.firstName" name="firstName" required>
+        <label>Nom de famille :</label>
+        <input type="text" [(ngModel)]="newUser.lastName" name="lastName" required>
+        <label>Email :</label>
+        <input type="email" [(ngModel)]="newUser.email" name="email" required>
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
+
+    <div>
+      <h2>Modifier un utilisateur</h2>
+      <form (ngSubmit)="updateUser()" *ngIf="editingUser">
+        <label>Nom :</label>
+        <input type="text" [(ngModel)]="editingUser.firstName" name="firstName" required>
+        <label>Nom de famille :</label>
+        <input type="text" [(ngModel)]="editingUser.lastName" name="lastName" required>
+        <label>Email :</label>
+        <input type="email" [(ngModel)]="editingUser.email" name="email" required>
+        <button type="submit">Enregistrer</button>
+        <button type="button" (click)="cancelEdit()">Annuler</button>
+      </form>
+    </div>
+
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
